@@ -19,7 +19,9 @@ public final class SoulHost implements ModInitializer {
     private final Path scriptsDirectory = FabricLoader.getInstance()
             .getConfigDir()
             .resolve("soulsmpmod")
-            .resolve("scripts");
+            .resolve("scripts")
+            .toAbsolutePath()
+            .normalize();
 
     private Scriptable scope;
 

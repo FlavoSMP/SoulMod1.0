@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "id": "flavomod",
+  "id": "soulsmpmod",
   "version": "${version}",
-  "name": "FlavoMod",
-  "description": "A Fabric mod for Minecraft",
+  "name": "Soul SMP mod",
+  "description": "A Fabric mod for Soul SMP",
   "authors": [
     "FlavoSMP"
   ],
@@ -12,19 +12,10 @@
     "sources": "https://github.com/FlavoSMP/FlavoMod1.0"
   },
   "license": "MIT",
-  "icon": "assets/flavomod/icon.png",
   "environment": "*",
-  "entrypoints": {
-    "main": [
-      "com.flavomod.FlavoMod"
-    ]
-  },
-  "mixins": [
-    "flavomod.mixins.json"
-  ],
   "depends": {
     "fabricloader": ">=0.15",
-    "minecraft": ">=1.21.1",
+    "minecraft": ">=1.21.11",
     "java": ">=21"
   }
 }

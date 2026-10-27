@@ -1,13 +1,12 @@
-# FlavoMod
+# Soul SMP mod
 
-A Fabric mod for Minecraft 1.21.1
+A Fabric mod for Minecraft 1.21.11.
 
 **Author:** FlavoSMP
 
 ## Features
 
-- Custom commands system
-- Expandable architecture
+- Empty mod starting point
 
 ## Building
 

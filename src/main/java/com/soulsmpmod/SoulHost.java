@@ -12,9 +12,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 
 public final class SoulHost implements ModInitializer {
     private static final Logger LOGGER = LoggerFactory.getLogger("soulsmpmod");
+        private static final String LEGACY_SOUL_HEARTS_MARKER =
+            "SoulHearts.js loaded; MinecraftServer is available:";
 
     private final Path scriptsDirectory = FabricLoader.getInstance()
             .getConfigDir()
@@ -53,14 +56,18 @@ public final class SoulHost implements ModInitializer {
     private void installDefaultScript(String fileName) throws IOException {
         Path destination = scriptsDirectory.resolve(fileName);
         if (Files.exists(destination)) {
-            return;
+            boolean isLegacySoulHeartsPlaceholder = fileName.equals("SoulHearts.js")
+                    && Files.readString(destination).contains(LEGACY_SOUL_HEARTS_MARKER);
+            if (!isLegacySoulHeartsPlaceholder) {
+                return;
+            }
         }
 
         try (InputStream script = getClass().getResourceAsStream("/scripts/" + fileName)) {
             if (script == null) {
                 throw new IOException("Missing bundled script: " + fileName);
             }
-            Files.copy(script, destination);
+            Files.copy(script, destination, StandardCopyOption.REPLACE_EXISTING);
         }
     }
 
@@ -110,6 +117,31 @@ public final class SoulHost implements ModInitializer {
 
         public void log(String message) {
             LOGGER.info("[Script] {}", message);
+        }
+
+        public void registerSoulHearts(
+            int startingHearts,
+            int maximumHearts,
+            int ghostHearts,
+            int diceThreshold,
+            int strengthThreshold,
+            int goldenHeartsThreshold,
+            int speedThreshold,
+            int effectDurationTicks
+        ) {
+            SoulHeartManager.initialize(
+                host.scriptsDirectory.getParent(),
+                new SoulHeartManager.Config(
+                    startingHearts,
+                    maximumHearts,
+                    ghostHearts,
+                    diceThreshold,
+                    strengthThreshold,
+                    goldenHeartsThreshold,
+                    speedThreshold,
+                    effectDurationTicks
+                )
+            );
         }
     }
 }

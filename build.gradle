@@ -1,12 +1,11 @@
 plugins {
-	id 'fabric-loom' version '1.9.2'
+	id 'net.fabricmc.fabric-loom-remap' version '1.19.3'
 	id 'maven-publish'
 }
 
-sourceCompatibility = JavaVersion.VERSION_21
-targetCompatibility = JavaVersion.VERSION_21
-
-archivesBaseName = project.archives_base_name
+base {
+	archivesName = project.archives_base_name
+}
 version = project.mod_version
 group = project.maven_group
 
@@ -22,6 +21,7 @@ dependencies {
 	mappings loom.officialMojangMappings()
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+	include(implementation("org.mozilla:rhino:1.9.2"))
 }
 
 processResources {
@@ -39,12 +39,14 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 java {
+	sourceCompatibility = JavaVersion.VERSION_21
+	targetCompatibility = JavaVersion.VERSION_21
 	withSourcesJar()
 }
 
 jar {
 	from("LICENSE") {
-		rename { String fileName -> "${fileName}_${project.archivesBaseName}" }
+		rename { String fileName -> "${fileName}_${project.archives_base_name}" }
 	}
 }
 
